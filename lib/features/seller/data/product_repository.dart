@@ -1,63 +1,49 @@
-
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_app/core/models/book.dart';
+import 'package:uuid/uuid.dart';
 
 class ProductRepository {
-  final FirebaseFirestore _firestore;
+  final SupabaseClient _supabase;
+  final Uuid _uuid = const Uuid();
 
-  ProductRepository(this._firestore);
+  ProductRepository(this._supabase);
   
-  String generateId() => _firestore.collection('books').doc().id;
+  String generateId() => _uuid.v4();
 
-  // Add Product
   Future<void> addBook(Book book) async {
-    // If id is empty or new, we might want to let Firestore generate it,
-    // but our Book model requires an ID. 
-    // Usually we generate ID first or let Firestore do it then update object.
-    // Here we assume ID is provided or we use the one passed.
-    await _firestore.collection('books').doc(book.id).set(book.toMap());
+    await _supabase.from('books').upsert(book.toMap());
   }
 
-  // Update Product
   Future<void> updateBook(Book book) async {
-    await _firestore.collection('books').doc(book.id).update(book.toMap());
+    await _supabase.from('books').update(book.toMap()).eq('id', book.id);
   }
 
-  // Delete Product
   Future<void> deleteBook(String bookId) async {
-    await _firestore.collection('books').doc(bookId).delete();
+    await _supabase.from('books').delete().eq('id', bookId);
   }
 
-  // Get Seller's Products
   Stream<List<Book>> getSellerBooks(String sellerId) {
-    print('DEBUG: getSellerBooks called for sellerId: $sellerId');
-    return _firestore
-        .collection('books')
-        .where('sellerId', isEqualTo: sellerId)
-        .snapshots()
-        .map((snapshot) {
-      print('DEBUG: Found ${snapshot.docs.length} books for seller $sellerId');
-      return snapshot.docs.map((doc) => Book.fromMap(doc.data(), doc.id)).toList();
-    });
+    return _supabase
+        .from('books')
+        .stream(primaryKey: ['id'])
+        .eq('sellerId', sellerId)
+        .map((data) => data.map((json) => Book.fromMap(json, json['id'])).toList());
   }
   
-  // Get All Products (for Buyer)
   Stream<List<Book>> getAllBooks() {
-    return _firestore.collection('books').snapshots().map((snapshot) {
-      print('DEBUG: getAllBooks found ${snapshot.docs.length} total books');
-      return snapshot.docs
-          .map((doc) => Book.fromMap(doc.data(), doc.id))
+    return _supabase.from('books').stream(primaryKey: ['id']).map((data) {
+      return data
+          .map((json) => Book.fromMap(json, json['id']))
           .where((book) => book.quantity > 0)
           .toList();
     });
   }
 
-  // Get Single Book
   Stream<Book?> getBook(String bookId) {
-    return _firestore.collection('books').doc(bookId).snapshots().map((doc) {
-      if (doc.exists) {
-        return Book.fromMap(doc.data()!, doc.id);
+    return _supabase.from('books').stream(primaryKey: ['id']).eq('id', bookId).map((data) {
+      if (data.isNotEmpty) {
+        return Book.fromMap(data.first, data.first['id']);
       }
       return null;
     });
@@ -65,5 +51,5 @@ class ProductRepository {
 }
 
 final productRepositoryProvider = Provider<ProductRepository>((ref) {
-  return ProductRepository(FirebaseFirestore.instance);
+  return ProductRepository(Supabase.instance.client);
 });

@@ -71,10 +71,6 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                 setState(() => _isLoading = true);
                 
                 try {
-                  print('DEBUG: Place Order button pressed');
-                  print('DEBUG: User is logged in: ${user.uid}');
-                  print('DEBUG: Cart has ${cartItems.length} items');
-
                   final sellerIds = cartItems
                       .map((item) => item.book.sellerId)
                       .where((id) => id.isNotEmpty)
@@ -84,18 +80,16 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   final orderId = const Uuid().v4();
                   final order = OrderModel(
                     id: orderId,
-                    userId: user.uid,
+                    userId: user.id,
                     items: cartItems,
                     totalAmount: totalAmount,
-                    status: 'Processing',
+                    status: OrderModel.statusProcessing,
                     timestamp: DateTime.now(),
                     sellerIds: sellerIds,
                   );
 
-                  // Create Order
-                  print('DEBUG: Calling createOrder...');
+                  // Create Order (repository now handles invoice + notifications)
                   await ref.read(orderRepositoryProvider).createOrder(order);
-                  print('DEBUG: createOrder returned. Clearing cart...');
                   
                   // Clear Cart
                   await ref.read(cartProvider.notifier).clearCart();
@@ -107,14 +101,52 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                        context: context, 
                        barrierDismissible: false,
                        builder: (context) => AlertDialog(
-                         title: const Text('Order Placed!'),
-                         content: const Text('Your order has been successfully placed.'),
+                         title: Row(
+                           children: [
+                             Icon(Icons.check_circle, color: Colors.green[600], size: 28),
+                             const SizedBox(width: 8),
+                             const Text('Order Placed!'),
+                           ],
+                         ),
+                         content: Column(
+                           mainAxisSize: MainAxisSize.min,
+                           crossAxisAlignment: CrossAxisAlignment.start,
+                           children: [
+                             const Text('Your order has been successfully placed.'),
+                             const SizedBox(height: 12),
+                             Container(
+                               padding: const EdgeInsets.all(12),
+                               decoration: BoxDecoration(
+                                 color: Colors.grey.withOpacity(0.1),
+                                 borderRadius: BorderRadius.circular(8),
+                               ),
+                               child: Row(
+                                 children: [
+                                   const Icon(Icons.receipt_long, size: 18, color: Colors.grey),
+                                   const SizedBox(width: 8),
+                                   const Expanded(
+                                     child: Text(
+                                       'Invoice generated automatically.\nView it in your order details.',
+                                       style: TextStyle(fontSize: 13, color: Colors.grey),
+                                     ),
+                                   ),
+                                 ],
+                               ),
+                             ),
+                           ],
+                         ),
                          actions: [
                            TextButton(
                              onPressed: () {
                                context.go('/buyer-home');
                              }, 
                              child: const Text('Continue Shopping'),
+                           ),
+                           ElevatedButton(
+                             onPressed: () {
+                               context.go('/order-history');
+                             },
+                             child: const Text('View Orders'),
                            ),
                          ],
                        ),

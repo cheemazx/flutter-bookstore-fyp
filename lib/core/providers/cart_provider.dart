@@ -1,59 +1,69 @@
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/cart_item.dart';
 import '../models/book.dart';
 import '../../features/buyer/data/cart_repository.dart';
 import '../../features/auth/data/auth_repository.dart';
 
-class CartNotifier extends StreamNotifier<List<CartItem>> {
+class CartNotifier extends AsyncNotifier<List<CartItem>> {
   @override
-  Stream<List<CartItem>> build() {
+  Future<List<CartItem>> build() async {
     final user = ref.watch(authRepositoryProvider).currentUser;
-    if (user == null) {
-      return Stream.value([]);
-    }
-    return ref.watch(cartRepositoryProvider).getCartKey(user.uid);
+    if (user == null) return [];
+    return ref.read(cartRepositoryProvider).getCartItems(user.id);
+  }
+
+  Future<void> _refresh() async {
+    final user = ref.read(authRepositoryProvider).currentUser;
+    if (user == null) return;
+    state = const AsyncValue.loading();
+    state = AsyncValue.data(
+      await ref.read(cartRepositoryProvider).getCartItems(user.id),
+    );
   }
 
   Future<void> addToCart(Book book) async {
     final user = ref.read(authRepositoryProvider).currentUser;
     if (user != null) {
-      await ref.read(cartRepositoryProvider).addToCart(user.uid, book);
+      await ref.read(cartRepositoryProvider).addToCart(user.id, book);
+      await _refresh();
     }
   }
 
   Future<void> removeFromCart(String bookId) async {
     final user = ref.read(authRepositoryProvider).currentUser;
     if (user != null) {
-      await ref.read(cartRepositoryProvider).removeFromCart(user.uid, bookId);
+      await ref.read(cartRepositoryProvider).removeFromCart(user.id, bookId);
+      await _refresh();
     }
   }
 
   Future<void> incrementQuantity(String bookId) async {
     final user = ref.read(authRepositoryProvider).currentUser;
     if (user != null) {
-      await ref.read(cartRepositoryProvider).updateQuantity(user.uid, bookId, 1);
+      await ref.read(cartRepositoryProvider).updateQuantity(user.id, bookId, 1);
+      await _refresh();
     }
   }
 
   Future<void> decrementQuantity(String bookId) async {
     final user = ref.read(authRepositoryProvider).currentUser;
     if (user != null) {
-      await ref.read(cartRepositoryProvider).updateQuantity(user.uid, bookId, -1);
+      await ref.read(cartRepositoryProvider).updateQuantity(user.id, bookId, -1);
+      await _refresh();
     }
   }
 
   Future<void> clearCart() async {
     final user = ref.read(authRepositoryProvider).currentUser;
     if (user != null) {
-      await ref.read(cartRepositoryProvider).clearCart(user.uid);
+      await ref.read(cartRepositoryProvider).clearCart(user.id);
+      await _refresh();
     }
   }
 }
 
-final cartProvider = StreamNotifierProvider<CartNotifier, List<CartItem>>(CartNotifier.new);
+final cartProvider = AsyncNotifierProvider<CartNotifier, List<CartItem>>(CartNotifier.new);
 
-// Helper for total amount to keep UI clean
 final cartTotalProvider = Provider<double>((ref) {
   final cartAsync = ref.watch(cartProvider);
   return cartAsync.maybeWhen(

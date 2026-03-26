@@ -4,7 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'widgets/inventory_list.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../core/providers/inventory_provider.dart';
+import '../../../core/providers/inventory_provider.dart';
+import '../../auth/data/auth_repository.dart';
+import 'seller_notifications_screen.dart';
 
 class SellerDashboardScreen extends ConsumerStatefulWidget {
   const SellerDashboardScreen({super.key});
@@ -16,6 +18,57 @@ class SellerDashboardScreen extends ConsumerStatefulWidget {
 class _SellerDashboardScreenState extends ConsumerState<SellerDashboardScreen> {
   String _searchQuery = '';
   String _selectedGenre = 'All';
+
+  Widget _buildNotificationBell(WidgetRef ref, BuildContext context) {
+    final user = ref.watch(authRepositoryProvider).currentUser;
+    if (user == null) return const SizedBox();
+
+    final notifsAsync = ref.watch(sellerNotificationsProvider(user.id));
+
+    return notifsAsync.when(
+      data: (notifications) {
+        final unreadCount = notifications.where((n) => !n.isRead).length;
+        return Stack(
+          children: [
+            IconButton(
+              icon: const Icon(Icons.notifications_outlined),
+              onPressed: () => context.push('/seller-notifications'),
+            ),
+            if (unreadCount > 0)
+              Positioned(
+                right: 6,
+                top: 6,
+                child: Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: const BoxDecoration(
+                    color: Colors.red,
+                    shape: BoxShape.circle,
+                  ),
+                  constraints: const BoxConstraints(minWidth: 18, minHeight: 18),
+                  child: Text(
+                    unreadCount > 9 ? '9+' : '$unreadCount',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+          ],
+        );
+      },
+      loading: () => IconButton(
+        icon: const Icon(Icons.notifications_outlined),
+        onPressed: () => context.push('/seller-notifications'),
+      ),
+      error: (_, __) => IconButton(
+        icon: const Icon(Icons.notifications_outlined),
+        onPressed: () => context.push('/seller-notifications'),
+      ),
+    );
+  }
 
   final List<String> _genreOptions = [
     'All',
@@ -92,6 +145,7 @@ class _SellerDashboardScreenState extends ConsumerState<SellerDashboardScreen> {
       appBar: AppBar(
         title: const Text('Seller Dashboard'),
         actions: [
+          _buildNotificationBell(ref, context),
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () => context.push('/store-profile'),
@@ -147,6 +201,24 @@ class _SellerDashboardScreenState extends ConsumerState<SellerDashboardScreen> {
                         color: Colors.orange[700]!,
                         onTap: () => context.push('/seller-orders'),
                       ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Row(
+                    children: [
+                      _buildActionCard(
+                        context: context,
+                        title: 'Analytics & Reports',
+                        icon: Icons.analytics_outlined,
+                        color: Colors.blue[600]!,
+                        onTap: () => context.push('/seller-analytics'),
+                      ),
+                      const SizedBox(width: 16),
+                      // Empty placeholder for alignment
+                      Expanded(child: const SizedBox()),
                     ],
                   ),
                 ),

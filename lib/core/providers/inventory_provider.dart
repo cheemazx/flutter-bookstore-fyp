@@ -11,7 +11,7 @@ class InventoryNotifier extends StreamNotifier<List<Book>> {
     if (user == null) {
       return Stream.value([]);
     }
-    return ref.watch(productRepositoryProvider).getSellerBooks(user.uid);
+    return ref.watch(productRepositoryProvider).getSellerBooks(user.id);
   }
 
   Future<void> addBook(Book book) async {
@@ -32,7 +32,7 @@ class InventoryNotifier extends StreamNotifier<List<Book>> {
          imageUrls: book.imageUrls,
          description: book.description,
          rating: book.rating,
-         sellerId: book.sellerId.isNotEmpty ? book.sellerId : user.uid,
+         sellerId: book.sellerId.isNotEmpty ? book.sellerId : user.id,
          storeName: book.storeName,
          quantity: book.quantity,
          genre: book.genre,

@@ -86,8 +86,8 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
       final currentUser = ref.read(authRepositoryProvider).currentUser;
       if (currentUser == null) throw Exception('User not logged in');
       
-      final userProfile = await ref.read(userRepositoryProvider).getUser(currentUser.uid);
-      final sellerId = currentUser.uid;
+      final userProfile = await ref.read(userRepositoryProvider).getUser(currentUser.id);
+      final sellerId = currentUser.id;
       final storeName = userProfile?.name ?? 'Unknown Seller';
 
       // 1. Upload new images

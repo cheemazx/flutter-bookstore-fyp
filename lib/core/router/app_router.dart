@@ -5,9 +5,11 @@ import '../models/book.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
 import '../../features/seller/presentation/seller_orders_screen.dart';
+import '../../features/seller/presentation/seller_notifications_screen.dart';
 import '../../features/seller/presentation/seller_dashboard_screen.dart';
 import '../../features/seller/presentation/store_profile_screen.dart';
 import '../../features/seller/presentation/add_product_screen.dart';
+import '../../features/seller/presentation/seller_analytics_screen.dart';
 import '../../features/buyer/presentation/buyer_home_screen.dart';
 import '../../features/buyer/presentation/product_details_screen.dart';
 import '../../features/buyer/presentation/cart_screen.dart';
@@ -17,6 +19,7 @@ import '../../features/buyer/presentation/edit_profile_screen.dart';
 import '../../features/buyer/presentation/order_history_screen.dart';
 import '../../features/buyer/presentation/buyer_settings_screen.dart';
 import '../../features/buyer/presentation/order_details_screen.dart';
+import '../../features/buyer/presentation/chatbot_screen.dart';
 import '../../core/models/order_model.dart';
 
 final appRouter = GoRouter(
@@ -91,6 +94,18 @@ final appRouter = GoRouter(
         final order = state.extra as OrderModel;
         return OrderDetailsScreen(order: order);
       },
+    ),
+    GoRoute(
+      path: '/chatbot',
+      builder: (context, state) => const ChatbotScreen(),
+    ),
+    GoRoute(
+      path: '/seller-notifications',
+      builder: (context, state) => const SellerNotificationsScreen(),
+    ),
+    GoRoute(
+      path: '/seller-analytics',
+      builder: (context, state) => const SellerAnalyticsScreen(),
     ),
   ],
 );
