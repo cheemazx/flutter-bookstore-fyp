@@ -31,7 +31,7 @@ class ChatService {
         final b = books[i];
         buffer.writeln('${i + 1}. "${b.title}" by ${b.author}');
         buffer.writeln('   - Genre: ${b.genre}');
-        buffer.writeln('   - Price: \$${b.price.toStringAsFixed(2)}');
+        buffer.writeln('   - Price: Rs. ${b.price.toStringAsFixed(0)}');
         buffer.writeln('   - Rating: ${b.rating}/5');
         buffer.writeln('   - Store: ${b.storeName.isNotEmpty ? b.storeName : "Unknown"}');
         buffer.writeln('   - In Stock: ${b.quantity} copies');

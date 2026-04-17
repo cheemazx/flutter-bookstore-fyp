@@ -64,7 +64,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
 
         if (mounted) {
           if (userModel != null) {
-            if (userModel.role == 'seller') {
+            if (userModel.role == 'admin') {
+              context.go('/admin-dashboard');
+            } else if (userModel.role == 'seller') {
               context.go('/seller-dashboard');
             } else {
               context.go('/buyer-home');

@@ -48,7 +48,7 @@ class NotificationRepository {
         userId: sellerId,
         title: '🛒 New Order Received!',
         message:
-            'You have a new order with $itemCount item(s) worth \$${totalAmount.toStringAsFixed(2)}.',
+            'You have a new order with $itemCount item(s) worth Rs. ${totalAmount.toStringAsFixed(0)}.',
         orderId: orderId,
         type: 'new_order',
         createdAt: DateTime.now(),

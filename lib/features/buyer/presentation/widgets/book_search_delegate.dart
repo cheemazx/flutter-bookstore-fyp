@@ -83,7 +83,7 @@ class BookSearchDelegate extends SearchDelegate {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    '\$${book.price.toStringAsFixed(2)}',
+                    'Rs. ${book.price.toStringAsFixed(2)}',
                     style: TextStyle(
                       color: Colors.grey[600],
                       fontWeight: FontWeight.bold,

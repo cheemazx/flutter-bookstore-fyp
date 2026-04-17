@@ -108,7 +108,7 @@ class InventoryList extends ConsumerWidget {
                         ),
                       const SizedBox(height: 4),
                       Text(
-                        '\$${book.price.toStringAsFixed(2)}',
+                        'Rs. ${book.price.toStringAsFixed(2)}',
                         style: TextStyle(
                           color: Colors.grey[600],
                           fontWeight: FontWeight.bold,

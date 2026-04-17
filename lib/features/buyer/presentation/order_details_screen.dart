@@ -246,8 +246,8 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                 data: order.items.map((item) => [
                   item.title,
                   item.quantity.toString(),
-                  '\$${item.price.toStringAsFixed(2)}',
-                  '\$${item.totalPrice.toStringAsFixed(2)}',
+                  'Rs. ${item.price.toStringAsFixed(2)}',
+                  'Rs. ${item.totalPrice.toStringAsFixed(2)}',
                 ]).toList(),
                 headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold),
                 headerDecoration: const pw.BoxDecoration(color: PdfColors.grey300),
@@ -536,7 +536,7 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                                 const TextStyle(fontWeight: FontWeight.w600)),
                         subtitle: Text('Qty: ${item.quantity}'),
                         trailing: Text(
-                          '\$${(item.price * item.quantity).toStringAsFixed(2)}',
+                          'Rs. ${(item.price * item.quantity).toStringAsFixed(2)}',
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                       );
@@ -552,7 +552,7 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                       const Text('Total Amount',
                           style: TextStyle(fontSize: 18, color: Colors.grey)),
                       Text(
-                        '\$${order.totalAmount.toStringAsFixed(2)}',
+                        'Rs. ${order.totalAmount.toStringAsFixed(2)}',
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,

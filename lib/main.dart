@@ -12,8 +12,8 @@ void main() async {
   await dotenv.load(fileName: ".env");
   
   await Supabase.initialize(
-    url: 'https://jsttwqyurkmxthgiezcv.supabase.co',
-    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpzdHR3cXl1cmtteHRoZ2llemN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzY1MzksImV4cCI6MjA4OTg1MjUzOX0.xsJoZzp8lvEfJEfNTRzzacyIcUsMpMUfF6P8QhUs07A',
+    url: dotenv.get('SUPABASE_URL'),
+    anonKey: dotenv.get('SUPABASE_ANON_KEY'),
   );
 
   runApp(const ProviderScope(child: BookstoreApp()));

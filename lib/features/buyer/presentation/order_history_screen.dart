@@ -236,7 +236,7 @@ class _OrderHistoryScreenState extends ConsumerState<OrderHistoryScreen>
                             children: [
                               Text('${order.items.length} items'),
                               Text(
-                                '\$${order.totalAmount.toStringAsFixed(2)}',
+                                'Rs. ${order.totalAmount.toStringAsFixed(2)}',
                                 style: TextStyle(
                                   color:
                                       Theme.of(context).primaryColor,

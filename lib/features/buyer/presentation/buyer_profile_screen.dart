@@ -56,6 +56,15 @@ class BuyerProfileScreen extends ConsumerWidget {
                 ),
                 const Divider(),
                 ListTile(
+                  leading: const Icon(Icons.account_balance_wallet_outlined),
+                  title: const Text('My Wallet'),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () {
+                    context.push('/buyer-wallet');
+                  },
+                ),
+                const Divider(),
+                ListTile(
                   leading: const Icon(Icons.settings_outlined),
                   title: const Text('Settings'),
                   trailing: const Icon(Icons.chevron_right),

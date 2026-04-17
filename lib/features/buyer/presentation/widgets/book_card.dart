@@ -168,7 +168,7 @@ class _BookCardState extends State<BookCard> with SingleTickerProviderStateMixin
                           ),
                           const Spacer(),
                           Text(
-                            '\$${widget.book.price.toStringAsFixed(2)}',
+                            'Rs. ${widget.book.price.toStringAsFixed(2)}',
                             style: const TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w800,

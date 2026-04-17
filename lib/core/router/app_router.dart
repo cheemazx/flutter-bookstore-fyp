@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../models/book.dart';
@@ -10,6 +9,7 @@ import '../../features/seller/presentation/seller_dashboard_screen.dart';
 import '../../features/seller/presentation/store_profile_screen.dart';
 import '../../features/seller/presentation/add_product_screen.dart';
 import '../../features/seller/presentation/seller_analytics_screen.dart';
+import '../../features/seller/presentation/seller_wallet_screen.dart';
 import '../../features/buyer/presentation/buyer_home_screen.dart';
 import '../../features/buyer/presentation/product_details_screen.dart';
 import '../../features/buyer/presentation/cart_screen.dart';
@@ -20,6 +20,10 @@ import '../../features/buyer/presentation/order_history_screen.dart';
 import '../../features/buyer/presentation/buyer_settings_screen.dart';
 import '../../features/buyer/presentation/order_details_screen.dart';
 import '../../features/buyer/presentation/chatbot_screen.dart';
+import '../../features/buyer/presentation/buyer_wallet_screen.dart';
+import '../../features/admin/presentation/admin_dashboard_screen.dart';
+import '../../features/admin/presentation/admin_topup_screen.dart';
+import '../../features/admin/presentation/admin_users_screen.dart';
 import '../../core/models/order_model.dart';
 
 final appRouter = GoRouter(
@@ -106,6 +110,26 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/seller-analytics',
       builder: (context, state) => const SellerAnalyticsScreen(),
+    ),
+    GoRoute(
+      path: '/buyer-wallet',
+      builder: (context, state) => const BuyerWalletScreen(),
+    ),
+    GoRoute(
+      path: '/seller-wallet',
+      builder: (context, state) => const SellerWalletScreen(),
+    ),
+    GoRoute(
+      path: '/admin-dashboard',
+      builder: (context, state) => const AdminDashboardScreen(),
+    ),
+    GoRoute(
+      path: '/admin-topup-requests',
+      builder: (context, state) => const AdminTopUpScreen(),
+    ),
+    GoRoute(
+      path: '/admin-users',
+      builder: (context, state) => const AdminUsersScreen(),
     ),
   ],
 );

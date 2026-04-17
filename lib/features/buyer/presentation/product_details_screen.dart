@@ -135,7 +135,7 @@ class ProductDetailsScreen extends ConsumerWidget {
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Text(
-                              '\$${currentBook.price.toStringAsFixed(2)}',
+                              'Rs. ${currentBook.price.toStringAsFixed(2)}',
                               style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w800,

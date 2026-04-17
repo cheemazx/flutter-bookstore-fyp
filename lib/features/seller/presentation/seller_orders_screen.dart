@@ -413,7 +413,7 @@ class _SellerOrdersScreenState extends ConsumerState<SellerOrdersScreen>
                       style: TextStyle(color: Colors.grey[600], fontSize: 13),
                     ),
                     Text(
-                      '\$${sellerTotal.toStringAsFixed(2)}',
+                      'Rs. ${sellerTotal.toStringAsFixed(2)}',
                       style: TextStyle(
                         color: Colors.green[700],
                         fontWeight: FontWeight.bold,
@@ -458,7 +458,7 @@ class _SellerOrdersScreenState extends ConsumerState<SellerOrdersScreen>
                     title: Text(item.title),
                     subtitle: Text('Qty: ${item.quantity}'),
                     trailing:
-                        Text('\$${item.totalPrice.toStringAsFixed(2)}'),
+                        Text('Rs. ${item.totalPrice.toStringAsFixed(2)}'),
                   );
                 },
               ),

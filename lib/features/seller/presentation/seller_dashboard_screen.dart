@@ -217,8 +217,13 @@ class _SellerDashboardScreenState extends ConsumerState<SellerDashboardScreen> {
                         onTap: () => context.push('/seller-analytics'),
                       ),
                       const SizedBox(width: 16),
-                      // Empty placeholder for alignment
-                      Expanded(child: const SizedBox()),
+                      _buildActionCard(
+                        context: context,
+                        title: 'My Earnings',
+                        icon: Icons.account_balance_wallet_outlined,
+                        color: Colors.green[600]!,
+                        onTap: () => context.push('/seller-wallet'),
+                      ),
                     ],
                   ),
                 ),

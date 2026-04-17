@@ -137,7 +137,7 @@ class CartScreen extends ConsumerWidget {
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
-                                    '\$${(item.book.price * item.quantity).toStringAsFixed(2)}',
+                                    'Rs. ${(item.book.price * item.quantity).toStringAsFixed(2)}',
                                     style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: AppTheme.priceColor),
                                   ),
                                 ],
@@ -204,7 +204,7 @@ class CartScreen extends ConsumerWidget {
                             const Text('Total', style: TextStyle(fontSize: 13, color: AppTheme.textSecondary)),
                             const SizedBox(height: 2),
                             Text(
-                              '\$${totalAmount.toStringAsFixed(2)}',
+                              'Rs. ${totalAmount.toStringAsFixed(2)}',
                               style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w800, color: AppTheme.textPrimary),
                             ),
                           ],

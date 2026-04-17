@@ -147,8 +147,8 @@ class _BuyerHomeScreenState extends ConsumerState<BuyerHomeScreen> {
                               divisions: 20,
                               activeColor: AppTheme.primary,
                               labels: RangeLabels(
-                                '\$${tempPriceRange.start.round()}',
-                                '\$${tempPriceRange.end.round()}',
+                                'Rs. ${tempPriceRange.start.round()}',
+                                'Rs. ${tempPriceRange.end.round()}',
                               ),
                               onChanged: (RangeValues values) {
                                 setModalState(() => tempPriceRange = values);
@@ -157,8 +157,8 @@ class _BuyerHomeScreenState extends ConsumerState<BuyerHomeScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text('\$${tempPriceRange.start.toStringAsFixed(0)}', style: const TextStyle(color: AppTheme.textSecondary, fontSize: 13)),
-                                Text('\$${tempPriceRange.end.toStringAsFixed(0)}', style: const TextStyle(color: AppTheme.textSecondary, fontSize: 13)),
+                                Text('Rs. ${tempPriceRange.start.toStringAsFixed(0)}', style: const TextStyle(color: AppTheme.textSecondary, fontSize: 13)),
+                                Text('Rs. ${tempPriceRange.end.toStringAsFixed(0)}', style: const TextStyle(color: AppTheme.textSecondary, fontSize: 13)),
                               ],
                             ),
                             const SizedBox(height: 24),

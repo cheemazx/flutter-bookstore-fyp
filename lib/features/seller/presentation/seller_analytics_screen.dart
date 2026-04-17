@@ -102,7 +102,7 @@ class _SellerAnalyticsScreenState extends ConsumerState<SellerAnalyticsScreen> {
           // KPI Cards
           Row(
             children: [
-              Expanded(child: _buildKPICard('Total Revenue', '\$${totalRevenue.toStringAsFixed(2)}', Icons.attach_money, Colors.green)),
+              Expanded(child: _buildKPICard('Total Revenue', 'Rs. ${totalRevenue.toStringAsFixed(2)}', Icons.attach_money, Colors.green)),
               const SizedBox(width: 12),
               Expanded(child: _buildKPICard('Items Sold', '$totalItemsSold', Icons.shopping_basket, Colors.blue)),
             ],
@@ -247,7 +247,7 @@ class _SellerAnalyticsScreenState extends ConsumerState<SellerAnalyticsScreen> {
                 showTitles: true,
                 reservedSize: 40,
                 getTitlesWidget: (value, meta) {
-                  return Text('\$${value.toInt()}');
+                  return Text('Rs. ${value.toInt()}');
                 },
               ),
             ),
