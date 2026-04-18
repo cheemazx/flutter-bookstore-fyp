@@ -43,7 +43,10 @@ class _AdminUsersScreenState extends ConsumerState<AdminUsersScreen> {
         _applyFilter();
       }
     } catch (e) {
-      if (mounted) setState(() => _loading = false);
+      if (mounted) {
+        setState(() => _loading = false);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error loading users: $e')));
+      }
     }
   }
 

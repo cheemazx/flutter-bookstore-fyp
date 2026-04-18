@@ -64,17 +64,22 @@ class TopUpRequestRepository {
   Future<List<TopUpRequest>> fetchRequestsByStatus(String status) async {
     final rows = await _supabase
         .from('topup_requests')
-        .select(
-          'id, user_id, amount, screenshot_url, status, admin_note, created_at, reviewed_at, users!inner(name, email)',
-        )
+        .select()
         .eq('status', status)
         .order('created_at', ascending: false);
 
-    return rows.map<TopUpRequest>((r) {
-      final userInfo = r['users'] as Map<String, dynamic>? ?? {};
-      return TopUpRequest(
+    final results = <TopUpRequest>[];
+    for (final r in rows) {
+      final userId = r['user_id'];
+      final userRow = await _supabase
+          .from('users')
+          .select('name, email')
+          .eq('id', userId)
+          .maybeSingle();
+
+      results.add(TopUpRequest(
         id: r['id'] ?? '',
-        userId: r['user_id'] ?? '',
+        userId: userId ?? '',
         amount: (r['amount'] ?? 0.0).toDouble(),
         screenshotUrl: r['screenshot_url'] ?? '',
         status: r['status'] ?? 'pending',
@@ -85,10 +90,11 @@ class TopUpRequestRepository {
         reviewedAt: r['reviewed_at'] != null
             ? DateTime.parse(r['reviewed_at'].toString())
             : null,
-        userName: userInfo['name'],
-        userEmail: userInfo['email'],
-      );
-    }).toList();
+        userName: userRow?['name'],
+        userEmail: userRow?['email'],
+      ));
+    }
+    return results;
   }
 
   /// Returns count of pending requests (for admin badge).

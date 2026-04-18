@@ -37,18 +37,25 @@ class _AdminTopUpScreenState extends ConsumerState<AdminTopUpScreen>
   Future<void> _loadAll() async {
     setState(() => _loading = true);
     final repo = ref.read(adminRepositoryProvider);
-    final results = await Future.wait([
-      repo.getRequestsByStatus('pending'),
-      repo.getRequestsByStatus('approved'),
-      repo.getRequestsByStatus('rejected'),
-    ]);
-    if (mounted) {
-      setState(() {
-        _pending = results[0];
-        _approved = results[1];
-        _rejected = results[2];
-        _loading = false;
-      });
+    try {
+      final results = await Future.wait([
+        repo.getRequestsByStatus('pending'),
+        repo.getRequestsByStatus('approved'),
+        repo.getRequestsByStatus('rejected'),
+      ]);
+      if (mounted) {
+        setState(() {
+          _pending = results[0];
+          _approved = results[1];
+          _rejected = results[2];
+          _loading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() => _loading = false);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error loading requests: $e')));
+      }
     }
   }
 

@@ -25,7 +25,7 @@ class BuyerHomeScreen extends ConsumerStatefulWidget {
 class _BuyerHomeScreenState extends ConsumerState<BuyerHomeScreen> {
   SortOption _currentSortOption = SortOption.relevance;
   String _selectedGenre = 'All';
-  RangeValues _selectedPriceRange = const RangeValues(0, 500);
+  RangeValues _selectedPriceRange = const RangeValues(0, 10000);
   double _minRating = 0;
   List<String> _selectedGenres = [];
 
@@ -463,7 +463,7 @@ class _BuyerHomeScreenState extends ConsumerState<BuyerHomeScreen> {
                             onPressed: () {
                               setState(() {
                                 _selectedGenre = 'All';
-                                _selectedPriceRange = const RangeValues(0, 500);
+                                _selectedPriceRange = const RangeValues(0, 10000);
                                 _minRating = 0;
                                 _selectedGenres = [];
                               });
